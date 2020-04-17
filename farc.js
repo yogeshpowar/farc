@@ -26,25 +26,26 @@
  * See <https://www.gnu.org/licenses/>.
  */
 var arr = [3, 1, 9, 5, 17, 42, 22, 40, 85, 12, 8, 28, 4, 18, 21, 15];
+//var arr = [1, 0, 1, 0, 3, 5, 2, 15, 1, 3, 1, 3, 0, 5, 3, 2];
 var sorted = arr.slice().sort((a,b) => b-a)
-var ranks = arr.slice().map(v => sorted.indexOf(v)+1);
+var ranks = arr.slice().map(v => sorted.indexOf(v) + 1);
 var uniq = ranks.filter((v, i, self) => self.indexOf(v) === i)
            .sort((a, b) => a - b);;
-var step = Math.round(255/uniq.length);
+var step = Math.round(255/uniq.slice(-1)[0]);
 let max = ranks.reduce((a, b) => Math.max(a, b));
 console.log("<html><body>");
 console.log("<table>");
 arr.map((e, i) => {
-    let r = uniq.indexOf(ranks[i]);
-    let avgR = uniq.length/2;
+    let r = ranks[i];
+    let avgR = uniq.slice(-1)[0]/2;
     if (r < avgR ) {
         gb = r * step;
-        gb += 128;
+        gb += 127;
         gb = gb.toString(16);
         gb = gb + "0000";
     } else if ( r > avgR) {
         gb = (max - r) * step;
-        gb = (128 - gb) * 2;
+        gb = (127 - gb) * 2;
         gb = gb.toString(16);
         gb = "FF" + gb + gb;
     } else {
